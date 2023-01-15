@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System;
 
@@ -23,6 +24,9 @@ public class BuildingManager : MonoBehaviour
     Material matForPrefab;
     
     Dictionary<GameObject, Material> prefabsMatsOnTheScene = new Dictionary<GameObject, Material>();
+    List<GameObject> objectPool = new List<GameObject>();
+
+    bool isThereAnObject;
     bool objPlacementActive;
     float rotateAmount;
     private void Awake()
@@ -38,24 +42,15 @@ public class BuildingManager : MonoBehaviour
             ReleaseObject();
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Destroy(prefabCopy);
+                objectPool.Add(prefabCopy);
+                prefabCopy.SetActive(false);
+                prefabCopy = null;
                 objPlacementActive = false;
             }//Let go object
         }
-        //if (Input.GetMouseButtonDown(1) && prefabCopy == null)
-        //{
-        //    prefabCopy = Instantiate(prefab, prefabCopyPos, Quaternion.identity);
-
-        //    matForPrefab = prefabCopy.GetComponent<Renderer>().sharedMaterial;
-
-        //    objPlacementActive = true;
-        //}//Spawn object with right click
         PlacementMaterialChange();
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            EnableChildMenu();
-        }
     }
+
     void MoveObject()
     {
         RaycastHit hit;
@@ -129,6 +124,12 @@ public class BuildingManager : MonoBehaviour
         else
             prefabCopy.GetComponent<Renderer>().material = mat_NotPlaceable;
     }
+    void selectionOutline()
+    {
+        if (!prefabCopy.GetComponent<Outline>()) prefabCopy.AddComponent<Outline>();
+        else prefabCopy.GetComponent<Outline>().enabled = prefabCopy.GetComponent<Outline>().enabled ? false : true;
+            
+    }
     float RoundToNearPosition(float value)//Creates a grid system
     {
         float Difference = value % gridSize;
@@ -138,15 +139,42 @@ public class BuildingManager : MonoBehaviour
         return value;
     }
     public void ObjectSpawn(int index)//Spawn chosen object
-    {   
-        if(prefabCopy == null)
+    {
+        if (prefabCopy == null)
         {
-            prefabCopy = Instantiate(spawnObject[index], prefabCopyPos, Quaternion.identity);
+            foreach (var objFromPool in objectPool)
+            {
+                if (objFromPool.name == spawnObject[index].name)
+                {
+                    objFromPool.SetActive(true);
+                    prefabCopy = objFromPool;
+                    objectPool.Remove(objFromPool);
+                    isThereAnObject = true;
+                    break;
+                }
+            }
+            if (!isThereAnObject)
+            {
+                prefabCopy = Instantiate(spawnObject[index], prefabCopyPos, Quaternion.identity);
+                prefabCopy.name = spawnObject[index].name;
+                selectionOutline();
+            }
             matForPrefab = spawnObject[index].GetComponent<Renderer>().sharedMaterial;
             objPlacementActive = true;
-            selectionOutline();
+            isThereAnObject = false;           
         } 
     }
+    public void EnableChildMenu()
+    {
+        foreach (Transform menuChild in buildingsMenu.transform)
+        {
+            if (!menuChild.GetComponent<Animator>().GetBool("buildingsOn"))
+                menuChild.GetComponent<Animator>().SetBool("buildingsOn", true);
+            else
+                menuChild.GetComponent<Animator>().SetBool("buildingsOn", false);
+        }
+    }
+   
 
     //public void EnableChildMenu(GameObject gO)
     //{
@@ -159,21 +187,4 @@ public class BuildingManager : MonoBehaviour
     //            menuChild.GetComponent<Animator>().SetBool("buildingsOn", false);
     //    }
     //}
-
-    public void EnableChildMenu()
-    {
-        foreach (Transform menuChild in buildingsMenu.transform)
-        {
-            if (!menuChild.GetComponent<Animator>().GetBool("buildingsOn"))
-                menuChild.GetComponent<Animator>().SetBool("buildingsOn", true);
-            else
-                menuChild.GetComponent<Animator>().SetBool("buildingsOn", false);
-        }
-    }
-    void selectionOutline()
-    {
-        if (!prefabCopy.GetComponent<Outline>()) prefabCopy.AddComponent<Outline>();
-        else prefabCopy.GetComponent<Outline>().enabled = prefabCopy.GetComponent<Outline>().enabled ? false : true;
-            
-    }
 }

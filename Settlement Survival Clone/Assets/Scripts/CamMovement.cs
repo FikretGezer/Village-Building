@@ -16,33 +16,35 @@ public class CamMovement : MonoBehaviour
     [SerializeField] float max=14f;
     [SerializeField] float zoomFactor = 5f;
 
-    int target = 60;
+    [SerializeField] int FPSTarget = 60;
+
+    float hor, ver, scrollData;
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = target;
+        Application.targetFrameRate = FPSTarget;
         transform.localPosition = new Vector3(BuildingManager.planeSize / 2,transform.localPosition.y, BuildingManager.planeSize / 2);
         pos = transform.localPosition;
         targetZoom = pos.y;
     }
     private void Update()
     {
-        float hor = Input.GetAxis("Horizontal");
-        float ver = Input.GetAxis("Vertical");
-        float scrollData = Input.GetAxis("Mouse ScrollWheel");
+        hor = Input.GetAxisRaw("Horizontal");
+        ver = Input.GetAxisRaw("Vertical");
+        scrollData = Input.GetAxis("Mouse ScrollWheel");
 
         targetZoom -= scrollData * zoomFactor;
         targetZoom = Mathf.Clamp(targetZoom, min, max);
 
-        pos += transform.right * hor * camMoveSpeed * Time.deltaTime;
-        pos += transform.forward * ver * camMoveSpeed * Time.deltaTime;
-        pos.y = Mathf.Lerp(transform.localPosition.y, targetZoom, camZoomSpeed * Time.deltaTime);
+        pos += transform.right * hor * camMoveSpeed *Time.unscaledDeltaTime/** Time.deltaTime*/;
+        pos += transform.forward * ver * camMoveSpeed * Time.unscaledDeltaTime /** Time.deltaTime*/;
+        pos.y = Mathf.Lerp(transform.localPosition.y, targetZoom, camZoomSpeed *Time.unscaledDeltaTime/** Time.deltaTime*/);
 
         transform.localPosition = pos;
 
         if (Input.GetKey(KeyCode.E))
-            transform.Rotate(new Vector3(0, 1, 0) * camRotateSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(new Vector3(0, 1, 0) * camRotateSpeed *Time.unscaledDeltaTime/** Time.deltaTime*/, Space.World);
         if (Input.GetKey(KeyCode.Q))
-            transform.Rotate(new Vector3(0, -1, 0) * camRotateSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(new Vector3(0, -1, 0) * camRotateSpeed *Time.unscaledDeltaTime/** Time.deltaTime*/, Space.World);
     }
 }
