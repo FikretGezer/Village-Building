@@ -6,6 +6,8 @@ TagManager:
   tags:
   - placeable
   - zemin
+  - tree
+  - rock
   layers:
   - Default
   - TransparentFX

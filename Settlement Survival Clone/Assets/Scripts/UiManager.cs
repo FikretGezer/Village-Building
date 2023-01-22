@@ -17,8 +17,6 @@ public class UiManager : MonoBehaviour
     public static float aMonthForAmountOfMinutes;
 
     float popTextShowTime = 50f;//10'un katlarýný yapzmamýn sebebi 10x hýzda 5,10,.. sn sürsün diye.
-
-    float timeMultiplier = 3f;
     float perSecondInGame = 1f;
     float fillAmount;
     

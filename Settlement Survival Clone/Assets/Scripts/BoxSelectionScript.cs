@@ -4,25 +4,14 @@ using UnityEngine;
 
 public class BoxSelectionScript : MonoBehaviour
 {
-    [SerializeField] List<GameObject> unitList = new List<GameObject>();
+    [SerializeField] public static List<GameObject> objs = new List<GameObject>();
     [SerializeField] RectTransform boxVisual;
-
-    Dictionary<GameObject, Color> unitColor = new Dictionary<GameObject, Color>();
 
     Camera cam;
     Rect boxSelection;
     Vector2 startPos, endPos;
     private void Start()
     {
-        unitList.AddRange(GameObject.FindGameObjectsWithTag("Player"));
-
-        foreach (var unit in unitList)
-        {
-            if(!unitColor.ContainsKey(unit))
-            {
-                unitColor[unit] = unit.GetComponent<Renderer>().material.color;
-            }
-        }
         cam = Camera.main;
         startPos = Vector2.zero;
         endPos = Vector2.zero;
@@ -30,23 +19,26 @@ public class BoxSelectionScript : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(boxVisual.gameObject.activeSelf)
         {
-            startPos = Input.mousePosition;
-        }
-        if(Input.GetMouseButton(0))
-        {
-            endPos = Input.mousePosition;
-            DrawVisual();
-            DrawSelection();
-        }
-        if(Input.GetMouseButtonUp(0))
-        {
-            SelectObjects();
-            startPos = Vector2.zero;
-            endPos = Vector2.zero;
-            DrawVisual();
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                startPos = Input.mousePosition;
+            }
+            if (Input.GetMouseButton(0))
+            {
+                endPos = Input.mousePosition;
+                DrawVisual();
+                DrawSelection();
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                SelectObjects();
+                startPos = Vector2.zero;
+                endPos = Vector2.zero;
+                DrawVisual();
+            }
+        }      
     }
     void DrawVisual()
     {
@@ -85,18 +77,15 @@ public class BoxSelectionScript : MonoBehaviour
     }
     void SelectObjects()
     {
-        foreach (var unit in unitList)
+        foreach(var obj in objs)
         {
-            if(boxSelection.Contains(cam.WorldToScreenPoint(unit.transform.position)))
+            if(boxSelection.Contains(cam.WorldToScreenPoint(obj.transform.position)))
             {
-                 unit.GetComponent<Renderer>().material.color = Color.green;
+                MarkController.marks[obj.GetComponentInChildren<MarkOnObject>()].gameObject.SetActive(true);
             }
-            else
+            if (boxSelection.Contains(cam.WorldToScreenPoint(obj.transform.position)) && ButtonManager.axeName== "Remove Pickable")
             {
-                if(unitColor.ContainsKey(unit))
-                {
-                    unit.GetComponent<Renderer>().material.color = unitColor[unit];
-                }
+                MarkController.marks[obj.GetComponentInChildren<MarkOnObject>()].gameObject.SetActive(false);
             }
         }
     }

@@ -15,6 +15,7 @@ public class ButtonManager : MonoBehaviour
     int[] dereceler = { 1, 3, 5 };
     int i = 0;
     float lastTimeScale;
+    public static string axeName;//If normal pickaxe selected this is true else if red pickaxe selected this is false
     
     private void Update()
     {
@@ -27,7 +28,7 @@ public class ButtonManager : MonoBehaviour
     }
     public void BtnEnableResources(GameObject obj)
     {
-        obj.SetActive(obj.activeSelf ? false : true);
+        obj.SetActive(!obj.activeSelf ? true : false);
     }
     public void BtnEnableObjectMenu(GameObject objectsMenu)
     {
@@ -41,6 +42,15 @@ public class ButtonManager : MonoBehaviour
     public void BtnTownNameChanger(TMP_Text text)
     {
         mainTownName.text = text.text;
+    }
+    public void BtnEnableAxeorNot(GameObject obj)
+    {
+        string tempName = EventSystem.current.currentSelectedGameObject.name;
+        if (tempName == axeName)
+            obj.SetActive(obj.activeSelf ? false : true);
+        else
+            obj.SetActive(true);
+        axeName = EventSystem.current.currentSelectedGameObject.name;
     }
 
     #region Speed Buttons

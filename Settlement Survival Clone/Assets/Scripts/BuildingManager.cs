@@ -15,9 +15,10 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] GameObject prefab;
     [SerializeField] Material mat_Placeable, mat_NotPlaceable, mat_PlacementOn;
     [SerializeField] GameObject buildingsMenu;
-    [SerializeField] public static float planeSize { get; private set; }//if this is 200 plansize is 200*200
     [SerializeField] float planeSizeValue;
-    [SerializeField] float restrictAmount;//Alaný her köþeden ne kadar sýnýrlayacaðýný belirtir.
+    [SerializeField] float restrictAmount;
+    public static float planeSize { get; private set; }//if this is 200 plansize is 200*200
+    public static float restrictValue { get; private set; }//Alaný her köþeden ne kadar sýnýrlayacaðýný belirtir.
 
     GameObject prefabCopy;
     Vector3 prefabCopyPos;
@@ -32,6 +33,7 @@ public class BuildingManager : MonoBehaviour
     private void Awake()
     {
         planeSize = planeSizeValue;
+        restrictValue = restrictAmount;
     }
     private void Update()
     {        
@@ -46,7 +48,7 @@ public class BuildingManager : MonoBehaviour
                 prefabCopy.SetActive(false);
                 prefabCopy = null;
                 objPlacementActive = false;
-            }//Let go object
+            }//Cancel placement for selected object
         }
         PlacementMaterialChange();
     }
