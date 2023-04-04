@@ -8,6 +8,11 @@ public class MarkHolder : MonoBehaviour
     [SerializeField] float heightOfMark;
     [SerializeField] Image icons;
     MarkOnObject markOnObject;
+    Camera cam;
+    private void Start()
+    {
+        cam = Camera.main;
+    }
     public void SetMark(MarkOnObject markOnObject)
     {
         this.markOnObject = markOnObject;
@@ -15,8 +20,8 @@ public class MarkHolder : MonoBehaviour
     private void Update()
     {
         if(markOnObject.tag=="tree")
-            transform.position = Camera.main.WorldToScreenPoint(markOnObject.transform.position+Vector3.up*6f);
+            transform.position = cam.WorldToScreenPoint(markOnObject.transform.position+Vector3.up*6f);
         else if(markOnObject.tag=="rock")
-            transform.position = Camera.main.WorldToScreenPoint(markOnObject.transform.position + Vector3.up * 2f);
+            transform.position = cam.WorldToScreenPoint(markOnObject.transform.position + Vector3.up * 2f);
     }
 }

@@ -18,11 +18,6 @@ public class MarkOnObject : MonoBehaviour
     }
     private void Update()
     {
-        //This is gonna work when characters are added. Because when tree cut or rock broke marks gonna be deleted from the scene too.
-        //if ()
-        //{
-        //    OnMarkRemoved(this);
-        //    Destroy(gameObject);
-        //}
+        
     }
 }

@@ -39,10 +39,12 @@ public class MarkController : MonoBehaviour
     {
         if(marks.ContainsKey(obj))
         {
+            //if (marks[obj] != null)
+            //    Destroy(marks[obj].gameObject);
+            //if (marks[obj] == null)
+            //    marks.Remove(obj);
             if (marks[obj] != null)
-                Destroy(marks[obj].gameObject);
-            if (marks[obj] == null)
-                marks.Remove(obj);
+                marks[obj].gameObject.SetActive(false);
         }
     }
 }

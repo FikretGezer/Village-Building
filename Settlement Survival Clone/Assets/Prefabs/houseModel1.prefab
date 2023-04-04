@@ -4815,6 +4815,8 @@ GameObject:
   - component: {fileID: 925589475370455375}
   - component: {fileID: 4285035596600368874}
   - component: {fileID: 2059119634616166944}
+  - component: {fileID: -5220458586156551745}
+  - component: {fileID: -8297560375087401123}
   - component: {fileID: 1508291466573575551}
   - component: {fileID: 3031864686939784487}
   - component: {fileID: 7507014025156636684}
@@ -4867,7 +4869,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f3d40d48549d8d4a80bbb93ba2d7788, type: 2}
+  - {fileID: 2100000, guid: b87388853029bb7498b59c34b099b9f8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4889,6 +4891,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &-5220458586156551745
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545931806230940661}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 31d07b7662e6db24aba106f7383b024e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!208 &-8297560375087401123
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545931806230940661}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 1.496, z: 2.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 1.496, z: -0.23400001}
+  m_TimeToStationary: 0.5
 --- !u!64 &1508291466573575551
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4931,6 +4968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2643abdc6f0228448bb27859e36cc1ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1024
+  mat_PlacementOn: {fileID: 2100000, guid: 0b1859758e50e6a4b8a0c24daece715e, type: 2}
+  timeParameterForLerp: 0.5
+  imPlaced: 0
+  current: 0
